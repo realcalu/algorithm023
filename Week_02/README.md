@@ -200,8 +200,35 @@ int nthUglyNumber(int n) {
     }
 ```
 
+看了一个人的代码，使用了一个静态变量存所有的元素（一开始就计算出来），这样就不用每次进行计算了，可以方便的取出，改了一下变成
+```
+class Solution {
+    public static Ugly ug = new Ugly();
+    int nthUglyNumber(int n) {
+        return ug.res[n-1];
+    }
+}
+class Ugly{
+    public int[] res = new int[1690];
+    Ugly(){
+        int a=0,b=0,c=0;
+        res[0] = 1;
+        for(int i=1;i<1690;i++){
+            res[i] = getMin(res[a]*2,res[b]*3,res[c]*5);
+            if(res[i] == res[a]*2) a++;
+            if(res[i] == res[b]*3) b++;
+            if(res[i] == res[c]*5) c++;
+        }
+    }
+    private static int getMin(int a,int b,int c){
+        return Math.min(Math.min(a,b),c);
+    }
+}
+
+```
 
 ## 前 K 个高频元素
+
 先使用map排序，然后使用大顶堆，最后输出。
 这里用了一个结构体，整体脉络会清晰一些
 
