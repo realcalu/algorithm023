@@ -149,22 +149,7 @@ class Solution {
 
 69. x 的平方根
 ```java
-class Solution {
-    public int mySqrt(int x) {
-        if (x == 0) {
-            return 0;
-        }
-        int ans = (int) Math.exp(0.5 * Math.log(x));
-        return (long) (ans + 1) * (ans + 1) <= x ? ans + 1 : ans;
-    }
-}
-```
-
-367. 有效的完全平方数
-
-```java
-class Solution {
-    public int mySqrt(int n) {
+public int mySqrt(int n) {
         int ans = 0;
         int l = 0;int r = n;
         while (l<=r){
@@ -178,6 +163,13 @@ class Solution {
         }
         return ans;
     }
+```
+
+367. 有效的完全平方数
+
+```java
+class Solution {
+    
 }
 ```
 
