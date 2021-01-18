@@ -135,15 +135,18 @@ class Solution {
 ```java
 class Solution {
     public boolean canJump(int[] nums) {
-		int len = nums.length;
-		int end = len - 1;
-		for (int i = len - 2; i >= 0; i--) {
-			if (nums[i] + i - end >= 0) {
-				end = i;
-			}
-		}
-		return end <= 0;
-	}
+        if(nums.length==1)
+            return true;
+        int max=nums.length-1;
+        boolean[] flag = new boolean[nums.length];
+        for (int i = nums.length-2; i >=0 ; i--) {
+            if(i+nums[i]>=max){
+                max = i;
+                flag[i] =true;
+            }
+        }
+        return flag[0];
+    }
 }
 ```
 
