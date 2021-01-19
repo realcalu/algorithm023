@@ -1,6 +1,6 @@
 236. 二叉树的最近公共祖先
 
-```java
+```
 class Solution {
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
         contain(root,p,q);
@@ -22,7 +22,7 @@ class Solution {
 
 46题：全排列
 
-```java
+```
 class Solution {
     HashSet<Integer> set;
     List<List<Integer>> res = new LinkedList<List<Integer>>();
@@ -52,7 +52,7 @@ class Solution {
 
 
 47. 全排列 II
-```java
+```
 class Solution {
     List<List<Integer>> res = new LinkedList<List<Integer>>();
     HashSet set = new HashSet<Integer>();
@@ -85,7 +85,7 @@ class Solution {
 
 
 102. 二叉树的层序遍历
-```java
+```
 class Solution {
     
     public List<List<Integer>> levelOrder(TreeNode root) {
@@ -136,5 +136,80 @@ class Solution {
 ```
 
 
+122. 买卖股票的最佳时机 II
+```java
+class Solution {
+    public int maxProfit(int[] prices) {
+        int sum = 0;
+        for (int i = 0; i < prices.length; i++) {
+            if(i+1>=prices.length)
+                return sum;
+            if (prices[i] < prices[i + 1]) {
+                sum+=prices[i+1]-prices[i];
+            }
+        }
+        return sum;
+    }
+}
+```
 
-122.买卖股票的最佳时机 II
+
+55. 跳跃游戏
+```java
+class Solution {
+    public boolean canJump(int[] nums) {
+        if(nums.length==1)
+            return true;
+        int max=nums.length-1;
+        boolean[] flag = new boolean[nums.length];
+        for (int i = nums.length-2; i >=0 ; i--) {
+            if(i+nums[i]>=max){
+                max = i;
+                flag[i] =true;
+            }
+        }
+        return flag[0];
+    }
+}
+```
+
+69. x 的平方根
+```java
+class Solution {
+        public int mySqrt(int n) {
+            int ans = 0;
+            int l = 0;int r = n;
+            while (l<=r){
+                int mid = l+(r-l)/2;
+                if((long)mid*mid<=n){
+                    ans = mid;
+                    l = mid+1;
+                }else{
+                    r = mid-1;
+                }
+            }
+            return ans;
+        }
+        
+    }
+```
+
+367. 有效的完全平方数
+
+```java
+class Solution {
+    public boolean isPerfectSquare(int num) {
+        int k = mySqrt(num);
+        if(k*k==num)
+            return true;
+        return false;
+    }
+    public int mySqrt(int x) {
+        if (x == 0) {
+            return 0;
+        }
+        int ans = (int) Math.exp(0.5 * Math.log(x));
+        return (long) (ans + 1) * (ans + 1) <= x ? ans + 1 : ans;
+    }
+}
+```
