@@ -602,3 +602,41 @@ class Solution {
 ```
 
 ##### 37. 解数独
+
+##### 双向bfs的模板
+
+```java
+public boolean bfs(String start, String end) {
+        HashSet<String> visitedSet = new HashSet<>();
+        HashSet<String> beginSet = new HashSet<>();
+        HashSet<String> endSet = new HashSet<>();
+
+
+        beginSet.add(start);
+        endSet.add(end);
+        visitedSet.add(start);
+        visitedSet.add(end);
+
+        while (!beginSet.isEmpty() && !endSet.isEmpty()) {
+            //选一个最小的开始遍历
+            if (beginSet.size() > endSet.size()) {
+                HashSet<String> set = beginSet;
+                beginSet = endSet;
+                endSet = set;
+            }
+
+            HashSet<String> tmp = new HashSet<>();
+            for (String s : beginSet) {
+                if (endSet.contains(s))
+                    return true;
+                if (!visitedSet.contains(s)) {
+                    tmp.add(s);
+                    visitedSet.add(s);
+                }
+            }
+            beginSet = tmp;
+        }
+        return false;
+    }
+```
+
