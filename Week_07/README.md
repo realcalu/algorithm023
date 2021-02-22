@@ -1,7 +1,7 @@
 ##### 70. 爬楼梯
 爬楼梯已经做了很多遍了,有使用dp做的，有使用递归，也有使用非递归。看课程老师说使用递归做一下
 
-```
+```java
 class Solution {
     int[] cache;
     public int climbStairs(int n){
@@ -19,7 +19,7 @@ class Solution {
 
 ##### 208. 实现 Trie (前缀树)
 根据老师给的模板写了一下，发现太慢，然后找了个快点的版本。如下。
-```
+```java
 class Trie {
     Trie[] child;
     boolean isEnd = false;
@@ -77,7 +77,7 @@ class Trie {
 ##### 547. 省份数量
 这个一看就是使用并查集，直接套并查集模板。
 
-```
+```java
 class Solution {
     public int findCircleNum(int[][] isConnected) {
         if(isConnected==null||isConnected.length==0)return 0;
@@ -122,7 +122,7 @@ class UnionFind {
 ##### 200. 岛屿数量
 ##### 这题可以使用dfs来做，然后看了课程发现也可以使用并查集来做。这里没用到秩去优化，但是有看到别人使用了，还不是很清楚为什么要用秩。
 
-```
+```java
 class Solution {
     private static int[][] fanxiang = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
     public int numIslands(char[][] grid) {
@@ -198,7 +198,7 @@ class UnionFind {
 
 ##### 130. 被围绕的区域
 之前使用的是dfs，听完老师的课使用了并查集来做。先把外围的O链接到一个虚拟的点，然后再把所有和O点相连的都的找到其并查集。最后把非外围的连通量都改为X即可。
-```
+```java
 public class Solution {
     private int m, n;
     public void solve(char[][] board) {
@@ -311,7 +311,7 @@ public class Solution {
 
 ##### 36. 有效的数独
 
-```
+```java
 class Solution {
     public boolean isValidSudoku(char[][] board) {
         HashSet<Integer>[] row = new HashSet[9];
@@ -344,7 +344,7 @@ class Solution {
 ```
 
 ##### 22. 括号生成
-```
+```java
 class Solution {
     private List<String> res = new LinkedList<>();
     public List<String> generateParenthesis(int n) {
@@ -364,7 +364,111 @@ class Solution {
 }
 ```
 ##### 127. 单词接龙
-这题可以用双向bfs解决
+这题可以用双向bfs解决。
+首先使用的是正常的bfs。
+
+```java
+class Solution {
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        HashSet<String> set = new HashSet<>();
+        HashSet<String> visit = new HashSet<>();
+        for (String s : wordList) {
+            set.add(s);
+        }
+        int rank = 1;
+        LinkedList<String> queue = new LinkedList<>();
+        queue.add(beginWord);
+        visit.add(beginWord);
+        while (!queue.isEmpty()){
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                String poll = queue.poll();
+                if(poll.equals(endWord))
+                    return rank;
+                char[] array = poll.toCharArray();
+                for (int j = 0; j < array.length; j++) {
+                    char s = array[j];
+                    for (char t='a';t<='z';t++) {
+                        if(t!=s)
+                            array[j] = t;
+                        String string = getString(array);
+                        if(set.contains(string)&&!visit.contains(string)){
+                            queue.add(string);
+                            visit.add(string);
+                        }
+                    }
+                    array[j] = s;
+                }
+            }
+            rank++;
+        }
+        return 0;
+    }
+    private String getString(char[] chars){
+        StringBuilder stringBuilder = new StringBuilder();
+        for (char aChar : chars) {
+            stringBuilder.append(aChar);
+        }
+        return stringBuilder.toString();
+    }
+}
+```
+然后使用双向bfs来解决,双向bfs可以把时间复杂度从bfs的115ms提高到20ms，双向的bfs会快很多
+
+```java
+class Solution {
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        HashSet<String> wordSet = new HashSet<>();
+        HashSet<String> visit = new HashSet<>();
+        HashSet<String> beginSet = new HashSet<>();
+        HashSet<String> endSet = new HashSet<>();
+        for (String s : wordList) {
+            wordSet.add(s);
+        }
+        if(!wordSet.contains(endWord))
+            return 0;
+        beginSet.add(beginWord);
+        endSet.add(endWord);
+        visit.add(beginWord);
+        visit.add(endWord);
+
+        int rank = 1;
+
+        while (!beginSet.isEmpty()&&!endSet.isEmpty()){
+            //找出小一点的set
+            if(beginSet.size()>endSet.size()){
+                HashSet<String> set = beginSet;
+                beginSet = endSet;
+                endSet = set;
+            }
+
+            HashSet<String> temp = new HashSet<>();
+            for (String word : beginSet) {
+                char[] array = word.toCharArray();
+                for (int j = 0; j < array.length; j++) {
+                    char s = array[j];
+                    for (char t='a';t<='z';t++) {
+                        if(t!=s)
+                            array[j] = t;
+                        String target = String.valueOf(array);
+                        if(endSet.contains(target))
+                            return rank+1;
+                        if(!visit.contains(target)&&wordSet.contains(target)){
+                            temp.add(target);
+                            visit.add(target);
+                        }
+                    }
+                    array[j] = s;
+                }
+
+            }
+            beginSet = temp;
+            rank++;
+        }
+        return 0;
+    }
+}
+```
 
 ##### 433. 最小基因变化
 这题可以用双向bfs解决
@@ -372,7 +476,7 @@ class Solution {
 ##### 212. 单词搜索 II
 
 ##### 51. N 皇后
-```
+```java
 class Solution {
     Set<Integer> pie;
     Set<Integer> na;
