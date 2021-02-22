@@ -471,7 +471,64 @@ class Solution {
 ```
 
 ##### 433. 最小基因变化
-这题可以用双向bfs解决
+这题可以用双向bfs解决,跟127题差不多
+
+```java
+class Solution {
+    public int minMutation(String start, String end, String[] bank) {
+        HashSet<String> visitedSet = new HashSet<>();
+        HashSet<String> beginSet = new HashSet<>();
+        HashSet<String> endSet = new HashSet<>();
+        HashSet<String> wordSet = new HashSet<>();
+        char[] bk = {'A','C','G','T'};
+
+        int rank = 1;
+        for (String s : bank) {
+            wordSet.add(s);
+        }
+        if(!wordSet.contains(end))
+            return -1;
+        beginSet.add(start);
+        endSet.add(end);
+        visitedSet.add(start);
+        visitedSet.add(end);
+
+        while (!beginSet.isEmpty()&&!endSet.isEmpty()){
+
+            if(beginSet.size()>endSet.size()){
+                HashSet<String> set = beginSet;
+                beginSet = endSet;
+                endSet = set;
+            }
+
+            HashSet<String> tmp = new HashSet<>();
+            for (String s : beginSet) {
+                char[] array = s.toCharArray();
+                for (int i = 0; i < array.length; i++) {
+                    char old = array[i];
+                    for (char j = 0; j <bk.length; j++) {
+                        array[i] = bk[j];
+                        String target = String.valueOf(array);
+                        if(endSet.contains(target))
+                            return rank++;
+
+
+                        if(!visitedSet.contains(target)&&wordSet.contains(target)){
+                            tmp.add(target);
+                            visitedSet.add(target);
+                        }
+                    }
+                    array[i] = old;
+                }
+            }
+
+            beginSet = tmp;
+            rank++;
+        }
+        return -1;
+    }
+}
+```
 
 ##### 212. 单词搜索 II
 
